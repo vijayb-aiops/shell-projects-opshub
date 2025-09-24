@@ -9,7 +9,7 @@
 # CONFIGURATION
 LOG_DIR="/var/log"           # Directory to clean (change if needed)
 DAYS_OLD=7                   # Delete logs older than this many days
-LOG_FILE="/var/log/cleanup.log"  # Log file to record actions
+LOG_FILE="/var/log/cleanup_$(date '+%Y%m%d_%H%M%S').log" # Timestamped log file
 
 # COLORS (for terminal output)
 RED='\033[0;31m'
@@ -29,7 +29,7 @@ usage() {
     exit 0
 }
 
-# Check if running as root (optional — remove if not needed)
+# Check if running as root (optional)
 if [ "$EUID" -ne 0 ]; then
     echo -e "${YELLOW}⚠️  Warning: Not running as root. Some logs may not be deletable.${NC}"
 fi
@@ -60,16 +60,17 @@ log_message "🧹 Starting log cleanup in $LOG_DIR (older than $DAYS_OLD days)"
 FIND_CMD="find $LOG_DIR -name \"*.log*\" -mtime +$DAYS_OLD"
 
 if [ "$DRY_RUN" = true ]; then
-    # DRY RUN — just print
+    # DRY RUN — just print and log
     echo -e "${YELLOW}📋 Files that would be deleted:${NC}"
     eval $FIND_CMD -print | while read file; do
         echo "  → $file"
+        log_message "Would delete: $file"
     done
     FILE_COUNT=$(eval $FIND_CMD | wc -l)
     echo -e "${YELLOW}📊 Total files: $FILE_COUNT${NC}"
     log_message "DRY RUN: $FILE_COUNT files would be deleted."
 else
-    # REAL RUN — but ask for confirmation FIRST
+    # REAL RUN — confirmation
     echo -e "${RED}🧨 WARNING: This will DELETE files. Are you sure? (y/N)${NC}"
     read -r CONFIRM
     if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
@@ -83,9 +84,11 @@ else
     while IFS= read -r file; do
         if rm -f "$file" 2>/dev/null; then
             echo "  ✅ Deleted: $file"
+            log_message "Deleted: $file"
             ((FILE_COUNT++))
         else
             echo "  ❌ Failed to delete: $file"
+            log_message "Failed to delete: $file"
         fi
     done < <(eval $FIND_CMD -print)
 

@@ -6,6 +6,8 @@
 # Story: "At 3 AM, the disk hit 98%. I ran this — and saved the site."
 # ==================================================
 
+
+
 # CONFIGURATION
 LOG_DIR="/var/log"           # Directory to clean (change if needed)
 DAYS_OLD=7                   # Delete logs older than this many days
@@ -19,7 +21,7 @@ NC='\033[0m' # No Color
 
 # Function to log messages
 log_message() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE" > /dev/null
 }
 
 # Function to show usage
@@ -106,3 +108,9 @@ if [ "$DRY_RUN" = false ]; then
     echo ""
     echo -e "${GREEN}🎉 You just saved the server. Go get coffee. ☕${NC}"
 fi
+
+# 📂 Show where log is saved + contents
+echo ""
+echo -e "${GREEN}📂 Log saved to: $LOG_FILE${NC}"
+echo -e "${GREEN}📝 Log contents:${NC}"
+cat "$LOG_FILE"

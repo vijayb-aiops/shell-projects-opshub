@@ -115,14 +115,14 @@ dos2unix log_cleaner.sh
 chmod +x log_cleaner.sh
 
 3. Run the script
-# Dry-run mode (preview only, no deletions)
-sudo ./log_cleaner.sh --dry-run
+1. Dry-run mode (preview only, no deletions)  
+sudo ./log_cleaner.sh --dry-run  
 
-# Normal run (with confirmation prompt)
-sudo ./log_cleaner.sh
+2. Normal run (with confirmation prompt)  
+sudo ./log_cleaner.sh  
 
-# Force mode (skips confirmation, useful for cron jobs)
-sudo ./log_cleaner.sh --force
+3. Force mode (skips confirmation, useful for cron jobs)  
+sudo ./log_cleaner.sh --force  
 
 ### What the script does (module by module)
 - **Header & Story** → Documents why the script exists (a 3 AM disk full incident).
@@ -160,3 +160,41 @@ Real Delete Example (`--force` or confirmed run):
 2025-09-24 21:15:11 - Deleted: /var/log/archive/syslog.1
 2025-09-24 21:15:11 - SUCCESS: Deleted 2 files.
 ```
+---
+
+## Step 7: Automate with Cron (Daily Log Files)
+
+To make the log cleaner run automatically every day, we will set up a cron job under the root user.  
+This version creates a **new log file per day**, so logs are easier to review and manage.
+
+### 1. Configure Vim as default editor for crontab
+echo 'export VISUAL=vim' >> ~/.bashrc
+echo 'export EDITOR=vim' >> ~/.bashrc
+
+Reload the updated configuration:
+source ~/.bashrc
+
+### 2. Edit the root crontab
+crontab -e
+
+Add this line at the bottom (runs every day at midnight):
+0 0 * * * /home/ubuntu/log_cleaner.sh --force >> /var/log/log_cleaner_cron_$(date +\%Y\%m\%d).log 2>&1
+
+🔹 Breakdown:
+- `0 0 * * *` → every day at 00:00 (midnight)
+- `/home/ubuntu/log_cleaner.sh --force` → full path to your script (`--force` skips confirmation so cron won’t hang)
+- `>> /var/log/log_cleaner_cron_$(date +%Y%m%d).log` → creates a new log file each day (e.g. `/var/log/log_cleaner_cron_20250924.log`)
+- `2>&1` → captures both standard output and errors into the same log
+ℹ️ Note: `2>&1` means "send errors (stderr, file descriptor 2) to the same place as normal output (stdout, file descriptor 1)".  
+This way both normal messages and errors are captured together in the same log file.
+
+Save and exit the editor. Cron will confirm the job is installed.
+
+### 3. Verify the cron job
+crontab -l
+
+Expected output:
+0 0 * * * /home/ubuntu/log_cleaner.sh --force >> /var/log/log_cleaner_cron_$(date +%Y%m%d).log 2>&1
+
+### 4. Monitor cron execution logs
+tail -f /var/log/log_cleaner_cron_20250924.log

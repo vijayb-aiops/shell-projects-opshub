@@ -114,7 +114,7 @@ dos2unix log_cleaner.sh
 2. Make script executable
 chmod +x log_cleaner.sh
 
-3. Run the script
+### Run the script
 1. Dry-run mode (preview only, no deletions)  
 sudo ./log_cleaner.sh --dry-run  
 

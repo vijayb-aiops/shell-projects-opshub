@@ -114,8 +114,15 @@ dos2unix log_cleaner.sh
 2. Make script executable
 chmod +x log_cleaner.sh
 
-3. Run with bash (not sh), with sudo to allow log writes
+3. Run the script
+# Dry-run mode (preview only, no deletions)
 sudo ./log_cleaner.sh --dry-run
+
+# Normal run (with confirmation prompt)
+sudo ./log_cleaner.sh
+
+# Force mode (skips confirmation, useful for cron jobs)
+sudo ./log_cleaner.sh --force
 
 ### What the script does (module by module)
 - **Header & Story** → Documents why the script exists (a 3 AM disk full incident).

@@ -106,10 +106,10 @@ cd /home/ubuntu
 Then save your script as `log_cleaner.sh` and run it. If you are already root, you don’t need `sudo` for the following commands.
 
 ### Prepare the script
-1. Convert Windows line endings to Linux
-sudo apt-get update -y  
-sudo apt-get install dos2unix -y  
-dos2unix log_cleaner.sh  
+1. Convert Windows line endings to Linux  
+sudo apt-get update -y    
+sudo apt-get install dos2unix -y    
+dos2unix log_cleaner.sh    
 
 2. Make script executable
 chmod +x log_cleaner.sh

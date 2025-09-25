@@ -1,7 +1,5 @@
 # 🧹 Project 1 – Log Cleaner
 
-# 🚀 AWS EC2 Free Tier Setup Guide (All Steps in One Place)
-
 ## Step 1: Install AWS CLI
 Follow AWS official docs: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 

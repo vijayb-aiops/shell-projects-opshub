@@ -122,7 +122,11 @@ sudo ./log_cleaner.sh --dry-run
 sudo ./log_cleaner.sh  
 
 3. Force mode (skips confirmation, useful for cron jobs)  
-sudo ./log_cleaner.sh --force  
+sudo ./log_cleaner.sh --force 
+
+4. Cleanup logs saves in the directory /var/log/ with the following format  
+cleanup_YYYYMMDD_HHMMSS.log  
+cleanup_20250925_152201.log  
 
 ### What the script does (module by module)
 - **Header & Story** → Documents why the script exists (a 3 AM disk full incident).
@@ -198,3 +202,8 @@ Expected output:
 
 ### 4. Monitor cron execution logs
 tail -f /var/log/log_cleaner_cron_20250924.log
+
+### 5. Cronjob logs saves in the directory /var/log/ with the following format  
+log_cleaner_cron_YYYYMMDD.log
+log_cleaner_cron_20250925.log
+ 

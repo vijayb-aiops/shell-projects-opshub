@@ -59,7 +59,7 @@ Expected output:
 
 Clone or download this project to your local machine. If you are on Windows using Git Bash, convert Windows line endings and make the script executable:
 
-dos2unix create_ubuntu_ec2.sh
+dos2unix create_ubuntu_ec2.sh  
 chmod +x create_ubuntu_ec2.sh
 
 Now run the script:

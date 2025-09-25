@@ -108,15 +108,15 @@ cd /home/ubuntu
 Then save your script as `log_cleaner.sh` and run it. If you are already root, you don’t need `sudo` for the following commands.
 
 ### Prepare the script
-## 1. Convert Windows line endings to Linux
-sudo apt-get update -y
-sudo apt-get install dos2unix -y
-dos2unix log_cleaner.sh
+1. Convert Windows line endings to Linux
+sudo apt-get update -y  
+sudo apt-get install dos2unix -y  
+dos2unix log_cleaner.sh  
 
-## 2. Make script executable
+2. Make script executable
 chmod +x log_cleaner.sh
 
-## 3. Run with bash (not sh), with sudo to allow log writes
+3. Run with bash (not sh), with sudo to allow log writes
 sudo ./log_cleaner.sh --dry-run
 
 ### What the script does (module by module)
@@ -137,3 +137,21 @@ sudo ./log_cleaner.sh --dry-run
 - **Log File Display** → At the end, shows the exact log file location and prints its contents.
 
 This makes the script **safe** (dry-run mode), **traceable** (logs every action), and **effective** (frees disk space automatically).
+
+### Sample Log Output
+
+Dry Run Example (`--dry-run`):
+```bash
+2025-09-24 21:12:45 - 🧹 Starting log cleanup in /var/log (older than 7 days)
+2025-09-24 21:12:45 - Would delete: /var/log/oldapp.log
+2025-09-24 21:12:45 - Would delete: /var/log/archive/syslog.1
+2025-09-24 21:12:45 - DRY RUN: 2 files would be deleted.
+```
+
+Real Delete Example (`--force` or confirmed run):
+```bash
+2025-09-24 21:15:10 - 🧹 Starting log cleanup in /var/log (older than 7 days)
+2025-09-24 21:15:11 - Deleted: /var/log/oldapp.log
+2025-09-24 21:15:11 - Deleted: /var/log/archive/syslog.1
+2025-09-24 21:15:11 - SUCCESS: Deleted 2 files.
+```

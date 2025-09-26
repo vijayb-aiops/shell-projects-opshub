@@ -126,7 +126,14 @@ sudo ./log_cleaner.sh --force
 
 4. Cleanup logs saves in the directory /var/log/ with the following format  
 cleanup_YYYYMMDD_HHMMSS.log  
-cleanup_20250925_152201.log  
+cleanup_20250925_152201.log 
+
+5. Cleanup old log files (optional)
+If you want to remove all the individual cleanup logs created on each run (e.g., `cleanup_20250925_123401.log`), run:
+rm -f /var/log/cleanup_*.log
+
+⚠️ Warning: This will permanently delete all cleanup log history. Do this only if you’re sure you don’t need the records anymore.
+
 
 ### What the script does (module by module)
 - **Header & Story** → Documents why the script exists (a 3 AM disk full incident).
@@ -206,4 +213,7 @@ tail -f /var/log/log_cleaner_cron_20250924.log
 ### 5. Cronjob logs saves in the directory /var/log/ with the following format  
 log_cleaner_cron_YYYYMMDD.log
 log_cleaner_cron_20250925.log
- 
+
+### 6. Cleanup old log files (optional)
+If you want to remove all the individual cleanup logs created on each run (e.g., `log_cleaner_cron_20250925.log`), run:
+rm -f /var/log/log_cleaner_*.log

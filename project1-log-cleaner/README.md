@@ -173,6 +173,30 @@ Real Delete Example (`--force` or confirmed run):
 ```
 ---
 
+## Log Cleaner Script Flowchart
+
+```mermaid
+flowchart TD
+    A([Start Script]) --> B[Load Configuration<br/>(LOG_DIR, DAYS_OLD, LOG_FILE)]
+    B --> C{Parse Arguments<br/>(--dry-run, --force)}
+    C --> D{Check if $LOG_DIR exists}
+    D -->|Not found| Z([End Script])
+    D -->|Directory exists| E[/Show Disk Usage (Before)/]
+    E --> F[Build Find Command<br/>(find *.log older than N days)]
+    F --> G{Dry Run Mode?}
+    G -->|Yes| H[List files to delete<br/>+ Log them]
+    H --> I[/Show Disk Usage (After)/]
+    G -->|No| J{Confirmation Needed?<br/>(--force skips)}
+    J -->|User aborts| Z
+    J -->|Yes / --force| K[Delete files one by one<br/>+ Log success/failure]
+    K --> L[Log Total Files Deleted]
+    L --> I
+    I --> M[Display Log File Location & Contents]
+    M --> Z
+    Z([End Script])
+
+---
+
 ## Step 7: Automate with Cron (Daily Log Files)
 
 To make the log cleaner run automatically every day, we will set up a cron job under the root user.  
@@ -217,3 +241,5 @@ log_cleaner_cron_20250925.log
 ### 6. Cleanup old log files (optional)
 If you want to remove all the individual cleanup logs created on each run (e.g., `log_cleaner_cron_20250925.log`), run:
 rm -f /var/log/log_cleaner_*.log
+
+

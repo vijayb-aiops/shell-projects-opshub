@@ -171,29 +171,9 @@ Real Delete Example (`--force` or confirmed run):
 2025-09-24 21:15:11 - Deleted: /var/log/archive/syslog.1
 2025-09-24 21:15:11 - SUCCESS: Deleted 2 files.
 ```
----
 
 ## Log Cleaner Script Flowchart
-
-```mermaid
-flowchart TD
-    A([Start Script]) --> B[Load Configuration<br/>(LOG_DIR, DAYS_OLD, LOG_FILE)]
-    B --> C{Parse Arguments<br/>(--dry-run, --force)}
-    C --> D{Check if $LOG_DIR exists}
-    D -->|Not found| Z([End Script])
-    D -->|Directory exists| E[/Show Disk Usage (Before)/]
-    E --> F[Build Find Command<br/>(find *.log older than N days)]
-    F --> G{Dry Run Mode?}
-    G -->|Yes| H[List files to delete<br/>+ Log them]
-    H --> I[/Show Disk Usage (After)/]
-    G -->|No| J{Confirmation Needed?<br/>(--force skips)}
-    J -->|User aborts| Z
-    J -->|Yes / --force| K[Delete files one by one<br/>+ Log success/failure]
-    K --> L[Log Total Files Deleted]
-    L --> I
-    I --> M[Display Log File Location & Contents]
-    M --> Z
-    Z([End Script])
+![Log Cleaner Script Flowchart](log_cleaner_flowchart.png)
 
 ---
 
@@ -242,4 +222,4 @@ log_cleaner_cron_20250925.log
 If you want to remove all the individual cleanup logs created on each run (e.g., `log_cleaner_cron_20250925.log`), run:
 rm -f /var/log/log_cleaner_*.log
 
-
+---

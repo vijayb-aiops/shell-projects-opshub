@@ -154,6 +154,9 @@ rm -f /var/log/cleanup_*.log
 
 This makes the script **safe** (dry-run mode), **traceable** (logs every action), and **effective** (frees disk space automatically).
 
+## Log Cleaner Script Flowchart
+![Log Cleaner Script Flowchart](log_cleaner_flowchart.png)
+
 ### Sample Log Output
 
 Dry Run Example (`--dry-run`):
@@ -171,10 +174,6 @@ Real Delete Example (`--force` or confirmed run):
 2025-09-24 21:15:11 - Deleted: /var/log/archive/syslog.1
 2025-09-24 21:15:11 - SUCCESS: Deleted 2 files.
 ```
-
-## Log Cleaner Script Flowchart
-![Log Cleaner Script Flowchart](log_cleaner_flowchart.png)
-
 ---
 
 ## Step 7: Automate with Cron (Daily Log Files)
